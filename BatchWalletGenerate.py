@@ -63,4 +63,5 @@ for col in ws.iter_rows(min_row=1, max_row=1, min_col=1, max_col=3):
 
 wb.save(filepath)
 
+print('Wallets generated.')
 
