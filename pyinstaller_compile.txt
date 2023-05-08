@@ -1,1 +1,0 @@
-pyinstaller --onefile --hidden-import=_openpyxl --hidden-import=_web3 --hidden-import=os --hidden-import=eth_utils --hidden-import=_mnemonic BatchWalletGenerate.py
