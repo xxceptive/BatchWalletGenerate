@@ -1,7 +1,7 @@
 To compile script into .exe you'll need to install pyinstaller:'
 cmd -> pip install pyinstaller
 
-Open directory with the BatchWalletGenerate.py and type:
+Open directory with BatchWalletGenerate.py and type:
 pyinstaller --onefile --hidden-import=_openpyxl --hidden-import=hdwallet --hidden-import=os BatchWalletGenerate.py
 
 You can run the script by .py file as well. Follow the steps:
