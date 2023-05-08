@@ -8,10 +8,7 @@ from openpyxl import load_workbook
 
 
 def batch_wallet_generate():
-    # Initializing Ethereum BIP44 wallet
     bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(cryptocurrency=EthereumMainnet)
-
-    # Generating mnemonic
     MNEMONIC: str = generate_mnemonic(language="english", strength=128)
 
     bip44_hdwallet.from_mnemonic(mnemonic=MNEMONIC)
@@ -28,7 +25,6 @@ while amount.isdigit() == False:
     amount = input('Type amount of wallets to create: ')
 amount = int(amount)
 
-# Создаем таблицу
 check = 0
 while True:
     filepath = os.getcwd() + f'\\eth_wallets_{amount}' + ('' if check == 0 else f'_{check}') + '.xlsx'
@@ -41,7 +37,6 @@ ws = wb.active
 ws.title = 'WALLETS'
 ws.append(['ADDRESS', 'PRIVATE KEY', 'MNEMONIC'])
 
-# Подгоняем внешний вид
 for i in range(1, amount + 2):
     ws.row_dimensions[i].height = 25
 ws.column_dimensions['A'].width = 48
