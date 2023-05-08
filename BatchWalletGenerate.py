@@ -1,32 +1,31 @@
-import openpyxl
-import web3
+from hdwallet import *
+from hdwallet.cryptocurrencies import EthereumMainnet
+from hdwallet.utils import generate_mnemonic
 import os
+import openpyxl
 from openpyxl.styles import Font, Alignment
-from web3.auto import w3
-from eth_utils import keccak
-from mnemonic import Mnemonic
 from openpyxl import load_workbook
 
-# Генерируем кошельки
+
 def batch_wallet_generate():
+    # Initializing Ethereum BIP44 wallet
+    bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(cryptocurrency=EthereumMainnet)
 
-    # Генерируем случайный закрытый ключ
-    private_key = w3.eth.account.create()._private_key.hex()
-    address = w3.eth.account.from_key(private_key)
+    # Generating mnemonic
+    MNEMONIC: str = generate_mnemonic(language="english", strength=128)
 
-    # Получаем его хеш
-    key_hash = keccak(bytes.fromhex(private_key[2:]))
+    bip44_hdwallet.from_mnemonic(mnemonic=MNEMONIC)
+    words = bip44_hdwallet.mnemonic()
 
-    # Генерируем seed фразу из хеша ключа
-    mnemonic = Mnemonic('english')
-    seed_phrase = mnemonic.generate(strength=128)
+    private_key = f'0x{bip44_hdwallet.private_key()}'
+    address = HDWallet(symbol='ETH').from_mnemonic(words).from_path("m/44'/60'/0'/0/0").p2pkh_address()
 
-    wallet = [address.address, private_key, seed_phrase]
+    wallet = [address, private_key, words]
     return wallet
 
-amount = input('Сколько кошельков вы хотите создать: ')
+amount = input('Type amount of wallets to create: ')
 while amount.isdigit() == False:
-    amount = input('Сколько кошельков вы хотите создать: ')
+    amount = input('Type amount of wallets to create: ')
 amount = int(amount)
 
 # Создаем таблицу
@@ -63,5 +62,4 @@ for col in ws.iter_rows(min_row=1, max_row=1, min_col=1, max_col=3):
 
 wb.save(filepath)
 
-print('Wallets generated.')
-
+print('\nFinished.')
