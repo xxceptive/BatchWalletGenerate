@@ -4,7 +4,6 @@ from hdwallet.utils import generate_mnemonic
 import os
 import openpyxl
 from openpyxl.styles import Font, Alignment
-from openpyxl import load_workbook
 
 
 def batch_wallet_generate():
@@ -12,9 +11,9 @@ def batch_wallet_generate():
     bip44_hdwallet: BIP44HDWallet = BIP44HDWallet(cryptocurrency=EthereumMainnet)
 
     # Generating mnemonic
-    MNEMONIC: str = generate_mnemonic(language="english", strength=128)
+    mnemonic = generate_mnemonic(language="english", strength=128)
 
-    bip44_hdwallet.from_mnemonic(mnemonic=MNEMONIC)
+    bip44_hdwallet.from_mnemonic(mnemonic=mnemonic)
     words = bip44_hdwallet.mnemonic()
 
     private_key = f'0x{bip44_hdwallet.private_key()}'
@@ -24,7 +23,7 @@ def batch_wallet_generate():
     return wallet
 
 amount = input('Type amount of wallets to create: ')
-while amount.isdigit() == False:
+while amount.isdigit() is False:
     amount = input('Type amount of wallets to create: ')
 amount = int(amount)
 
@@ -57,7 +56,7 @@ for row in ws.iter_rows(min_row=1, max_row=amount + 1, min_col=1, max_col=3):
 
 for col in ws.iter_rows(min_row=1, max_row=1, min_col=1, max_col=3):
     for cell in col:
-        cell.font = Font(size= 13,
+        cell.font = Font(size=13,
                          bold=False)
 
 wb.save(filepath)
